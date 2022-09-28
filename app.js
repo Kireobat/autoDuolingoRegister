@@ -2,15 +2,17 @@
 
 const puppeteer = require('puppeteer');
 
-//------------- Puppeteer ----------------//
+//-------------Credentials / Variables----------------//
 
 const age = "45"
 const pass = "123456789"
 let num = 1
-let inputEmail = ""
-const email = ""
+let inputEmail = "test+"+num+"@gmail.com"
+const email = "test+166@gmail.com"
 
-const creds = { age, email, pass }
+const creds = { age, inputEmail, pass }
+
+//------------- Delay Function----------------//
 
 function delay(time) {
     return new Promise(function(resolve) { 
@@ -18,6 +20,8 @@ function delay(time) {
         console.log("waiting for " + time + "ms");
     });
  }
+
+//------------- Puppeteer ----------------//
 
 const url = process.argv[2];
 if (!url) {
@@ -45,14 +49,21 @@ async function run() {
 
     await page.waitForSelector('input[data-test="age-input"]');
     await page.type('input[data-test="age-input"]', creds.age);
-    await page.type('input[data-test="email-input"]', creds.email);
+    await page.type('input[data-test="email-input"]', creds.inputEmail);
     await page.type('input[data-test="password-input"]', creds.pass);
+    await page.click('button[data-test="register-button"]');
+    
+    await delay(4000)
 
-    await delay(300)
-
-    await page.screenshot({path: 'duo.png'});
+    await page.screenshot({path: 'duo'+num+'.png'});
     
     browser.close();
 }
 
+//------------- Acctually running the program----------------//
+
 run();
+    
+    
+
+
