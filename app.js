@@ -4,13 +4,17 @@ const puppeteer = require('puppeteer');
 
 //-------------Credentials / Variables----------------//
 
+// website url = https://www.duolingo.com/
+
+let i = 0
+
 const age = "45"
 const pass = "123456789"
-let num = 1
-let inputEmail = "test+"+num+"@gmail.com"
+let inputEmail = "test+"+i+"@gmail.com"
 const email = "test+166@gmail.com"
 
-const creds = { age, inputEmail, pass }
+
+let creds = { age, inputEmail, pass }
 
 //------------- Delay Function----------------//
 
@@ -49,17 +53,25 @@ async function run() {
 
     await page.waitForSelector('input[data-test="age-input"]');
     await page.type('input[data-test="age-input"]', creds.age);
-    await page.type('input[data-test="email-input"]', creds.inputEmail);
+    await page.type('input[data-test="email-input"]', "test+"+i+"@gmail.com");
     await page.type('input[data-test="password-input"]', creds.pass);
     await page.click('button[data-test="register-button"]');
     
     await delay(4000)
+    await page.screenshot({path: 'duo'+i+'.png'});
 
-    await page.screenshot({path: 'duo'+num+'.png'});
-    
     browser.close();
 }
 
-//------------- Acctually running the program----------------//
+//------------- Actually running the program----------------//
 
-run();
+async function main() {
+    for (i = 0; i < 10; i++) 
+    {
+        console.log("starting run " + i);
+        await run();
+        console.log("finished run " + i);
+    }
+}
+
+main();
